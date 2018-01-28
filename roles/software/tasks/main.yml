@@ -1,0 +1,8 @@
+---
+# tasks file for software
+
+- name: "Install Software Pack"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ software_pack }}"

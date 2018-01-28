@@ -1,0 +1,8 @@
+---
+# defaults file for all_computers
+
+all_computers_public_folders:
+  - "/data"
+  - "/tmp2"
+
+time_zone: "America/Chicago"

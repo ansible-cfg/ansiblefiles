@@ -1,0 +1,17 @@
+---
+# unrar not in rpi repositories, used unar
+
+software_pack:
+  - "git"
+  - "htop"
+  - "man"
+  - "mc"
+  - "nano"
+  - "p7zip"
+  - "sqlite3"
+  - "sshfs"
+  - "tmux"
+  - "tree"
+  - "unar"
+  - "unzip"
+  - "zip"
