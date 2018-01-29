@@ -18,10 +18,20 @@
       auto_import_keys: yes
       runrefresh: yes
 
-  - name: "Install common console tools"
+  - name: "Install common console software"
     include_role:
       name: software
       vars_from: common_console_suse
+
+  - name: "Install common gui software"
+    include_role:
+      name: software
+      vars_from: common_gui_suse
+
+  - name: "Install graphics software"
+    include_role:
+      name: software
+      vars_from: graphics_gui_suse
 
 - hosts: joey_leap_42_3_desktop
 

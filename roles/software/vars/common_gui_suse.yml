@@ -1,0 +1,10 @@
+---
+
+software_pack:
+  - "dosbox"
+  - "filezilla"
+  - "git"
+  - "keepass"
+  - "kjots"
+  - "sqlitebrowser"
+  - "vlc"
