@@ -1,0 +1,17 @@
+---
+
+software_pack:
+  - "git"
+  - "htop"
+  - "mc"
+  - "nano"
+  - "p7zip"
+  - "rar"
+  - "sqlite3"
+  - "sshfs"
+  - "tmux"
+  - "tree"
+  - "unar"
+  - "unrar"
+  - "unzip"
+  - "zip"

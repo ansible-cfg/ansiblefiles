@@ -4,6 +4,13 @@
     url: "{{ github_dotfiles_url }}/.bash_aliases"
     dest: "/home/{{ user_name }}/.bash_aliases"
     mode: 0644
+  
+- name: "Symlink .bash_aliases for Suse systems"
+  file:
+    path: "/home/{{ user_name }}/.alias"
+    src: "/home/{{ user_name }}/.bash_aliases"
+    state: link
+  when: ansible_os_family == "Suse"
 
 - name: "Install .nanorc"
   get_url:

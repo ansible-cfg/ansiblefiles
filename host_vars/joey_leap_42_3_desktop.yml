@@ -1,0 +1,13 @@
+---
+# HOST VARIABLES
+
+# test host
+ansible_host: 192.168.1.70
+
+# production host
+#ansible_host: 192.168.1.23
+
+ansible_connection: ssh
+ansible_user: joey
+
+host_name: p6tdlxv2

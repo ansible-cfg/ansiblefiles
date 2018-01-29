@@ -6,7 +6,7 @@
 #   Development: ansible, docker, git
 
 # GUI Utilities:
-#   Common: keepass, sqlitebrowser, kjots, chrome, vlc
+#   Common: keepass, sqlitebrowser, kjots, chrome, vlc, filezilla
 #   Development: virtualbox, virtualbox-vnc, virtualbox extensions, python, java
 #                vs code
 #   Games: dosbox

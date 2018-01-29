@@ -1,0 +1,38 @@
+---
+# PLAYBOOK
+
+- hosts: joey_leap_42_3_desktop
+  become: yes
+
+  tasks:
+  - name: "Run all computers setup"
+    include_role:
+      name: all_computers
+
+  - name: "Add Packman repository"
+    zypper_repository:
+      name: "Packman Repository"
+      description: "Leap 42.3 Packman Repository"
+      repo: "http://packman.inode.at/suse/openSUSE_Leap_42.3/"
+      state: present
+      auto_import_keys: yes
+      runrefresh: yes
+
+  - name: "Install common console tools"
+    include_role:
+      name: software
+      vars_from: common_console_suse
+
+- hosts: joey_leap_42_3_desktop
+
+  tasks:
+  - name: "Install common user dotfiles"
+    include_role:
+      name: software
+      tasks_from: common_user_dotfiles
+    vars:
+      user_name: "{{ ansible_user }}"
+
+# TODO:
+#   configure git
+#   configure firewall
