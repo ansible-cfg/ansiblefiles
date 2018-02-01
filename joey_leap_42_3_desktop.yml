@@ -1,5 +1,5 @@
 ---
-# PLAYBOOK
+# Steps to run as root
 
 - hosts: joey_leap_42_3_desktop
   become: yes
@@ -44,10 +44,24 @@
       - graphics_tools
 
 
-# - hosts: joey_leap_42_3_desktop
+# Steps to run as user
+- hosts: joey_leap_42_3_desktop
+
+  tasks:
+  - name: "Install .bash_aliases"
+    include_role:
+      name: bash_aliases
+    vars:
+      user_name: "{{ ansible_user }}"
+  
+  - name: "Install nano"
+    include_role:
+      name: nano
+    vars:
+      user_name: "{{ ansible_user }}"
+
 
 # TODO:
-#   install dotfiles
 #   configure git
 #   configure firewall
 #   nano color highlighting

@@ -11,4 +11,3 @@ ansible_connection: ssh
 ansible_user: joey
 
 host_name: p6tdlxv2
-time_zone: "America/Chicago"
