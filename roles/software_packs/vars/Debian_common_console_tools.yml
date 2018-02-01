@@ -1,5 +1,4 @@
 ---
-# unrar not in rpi repositories, used unar
 
 software_pack:
   - "git"

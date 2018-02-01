@@ -1,2 +1,8 @@
+[ansible_control_server]
 rpi_server
+
+[joey_desktop]
 joey_leap_42_3_desktop
+
+[web_server]
+joeysbytes_net

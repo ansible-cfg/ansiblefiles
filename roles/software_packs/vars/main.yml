@@ -1,5 +1,5 @@
 ---
-# vars file for software
+# vars file for software_packs
 
 # Console Utilities:
 #   Common: htop, man, mc, nano, p7zip, rar/unrar, sqlite3, sshfs, tmux, tree, zip/unzip, unar?

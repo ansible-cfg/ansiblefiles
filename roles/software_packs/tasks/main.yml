@@ -1,0 +1,16 @@
+---
+# tasks file for software_packs
+
+# Variable to pass in: software_pack_type
+
+- name: "Load list of software to install"
+  include_vars:
+    file: "{{ ansible_os_family }}_{{ software_pack_type }}.yml"
+
+- name: "Install software pack"
+  package:
+    name: "{{ software_pack_item }}"
+    state: present
+  with_items: "{{ software_pack }}"
+  loop_control:
+    loop_var: software_pack_item

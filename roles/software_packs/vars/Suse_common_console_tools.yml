@@ -3,6 +3,7 @@
 software_pack:
   - "git-core"
   - "htop"
+  - "man"
   - "mc"
   - "nano"
   - "p7zip"
