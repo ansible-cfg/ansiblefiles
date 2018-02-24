@@ -1,0 +1,65 @@
+---
+# https://www.kde.org/applications/
+
+software_pack:
+# Development
+  - "kompare"
+  # - "umbrello" - uml modeler
+
+# Graphics
+  - "gwenview"
+  - "kcolorchooser"
+  - "kolourpaint"
+  - "kruler"
+  - "okular"
+  - "skanlite"
+  - "kde-spectacle"
+  # - "krita"
+
+# Internet
+  - "akregator"
+  - "kget"
+  - "kmail"
+  # - "knemo" - not in repos, network monitor
+  - "konversation"
+  # - "kopete" - multi-protocal chat client
+  - "krdc"
+  - "ktorrent"
+
+# Multimedia
+  - "k3b"
+  # - "kdenlive"
+  # - "kwave"
+
+# Office
+  - "kaddressbook"
+  # - kjots - dead project?
+  - "kontact"
+  - "korganizer"
+  # - "tellico" - # collections manager
+
+# System
+  - "dolphin"
+  - "partitionmanager"
+  # - kdiskfree - not in repos
+  - "kinfocenter"
+  - "khelpcenter"
+  - "konsole"
+  # - "krfb" - desktop sharing
+  - "ksysguard"
+  - "ksystemlog"
+
+# Utilities
+  - "ark"
+  - "filelight"
+  - "kate"
+  - "kcalc"
+  - "kcharselect"
+  - "kgpg"
+  - "kmag"
+  - "knotes"
+  # - "krecipes"
+  - "kronometer"
+  - "kwrite"
+  - "okteta"
+

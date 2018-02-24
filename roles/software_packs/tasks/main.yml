@@ -5,7 +5,7 @@
 
 - name: "Load list of software to install: {{ software_pack_list }}"
   include_vars:
-    file: "{{ software_pack_list }}.yml"
+    file: "{{ ansible_distribution }}_{{ software_pack_list }}.yml"
 
 - name: "Install software pack: {{ software_pack_list }}"
   package:

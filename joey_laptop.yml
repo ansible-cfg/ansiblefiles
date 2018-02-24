@@ -31,5 +31,25 @@
     include_role:
       name: software_packs
     vars:
-      software_pack_list: "Ubuntu_common_console_tools"
+      software_pack_list: "common_console_tools"
 
+  - name: "Install KDE applications"
+    include_role:
+      name: software_packs
+    vars:
+      software_pack_list: "kde_tools"
+
+  - name: "Install computer-specific applications"
+    package:
+      name:
+        - "pinta"
+        - "dosbox"
+        - "ffmpeg"
+        - "vlc"
+      state: present
+
+
+# Steps to run as user
+# - hosts: joey_laptop
+
+#   tasks:
