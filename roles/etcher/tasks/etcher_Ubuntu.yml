@@ -1,0 +1,16 @@
+---
+- name: "Add Bintray.com GPG key for Etcher"
+  apt_key:
+    keyserver: "hkp://pgp.mit.edu:80"
+    id: "379CE192D401AB61"
+    state: present
+
+- name: "Add Etcher deb for Ubuntu"
+  apt_repository:
+    repo: "deb https://dl.bintray.com/resin-io/debian stable etcher"
+    state: present
+
+- name: "Install Etcher for Ubuntu"
+  apt:
+    name: etcher-electron
+    state: present

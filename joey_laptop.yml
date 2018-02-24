@@ -1,7 +1,7 @@
 ---
 # Bugs as of this writing:
-#   include_role does not work with looping, so have to specify each task individually
-#   sometimes software installations will get marked as changed even if they do not change
+#   include_role does not work with looping, so have to specify each as an individual task
+#   sometimes software installations will get notified as changed even if they do not change
 
 # Steps to run as root
 - hosts: joey_laptop
@@ -49,7 +49,6 @@
       name: software_packs
     vars:
       software_pack_list: other
-    tags: runme
 
   - name: "Install LibreOffice"
     include_role:
@@ -58,8 +57,11 @@
   - name: "Install KeePassXC"
     include_role:
       name: keepassxc
-    tags: runme
 
+  - name: "Install Etcher"
+    include_role:
+      name: etcher
+    tags: runme
 
 # Steps to run as user
 - hosts: joey_laptop

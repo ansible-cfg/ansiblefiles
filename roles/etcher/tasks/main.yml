@@ -1,0 +1,7 @@
+---
+# tasks file for etcher
+
+# https://github.com/resin-io/etcher#debian-and-ubuntu-based-package-repository-gnulinux-x86x64
+
+- name: "Select Etcher to install"
+  include_tasks: "etcher_{{ ansible_distribution }}.yml"
