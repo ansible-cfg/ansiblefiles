@@ -11,6 +11,6 @@
 
 - name: "Install .nanorc"
   get_url:
-    url: "{{ raw_github_dotfiles_url }}/.nanorc"
+    url: "{{ raw_github_url }}/dotfiles/master/nano/.nanorc"
     dest: "/home/{{ user_name }}/.nanorc"
     mode: 0644

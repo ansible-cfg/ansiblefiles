@@ -3,14 +3,11 @@
 
 # Variable to pass in: software_pack_type
 
-- name: "Load list of software to install"
+- name: "Load list of software to install: {{ software_pack_list }}"
   include_vars:
-    file: "{{ ansible_os_family }}_{{ software_pack_type }}.yml"
+    file: "{{ software_pack_list }}.yml"
 
-- name: "Install software pack"
+- name: "Install software pack: {{ software_pack_list }}"
   package:
-    name: "{{ software_pack_item }}"
+    name: "{{ software_pack }}"
     state: present
-  with_items: "{{ software_pack }}"
-  loop_control:
-    loop_var: software_pack_item

@@ -1,13 +1,4 @@
 ---
 # vars file for software_packs
 
-# Console Utilities:
-#   Common: htop, man, mc, nano, p7zip, rar/unrar, sqlite3, sshfs, tmux, tree, zip/unzip, unar?
-#   Development: ansible, docker, git
-
-# GUI Utilities:
-#   Common: keepass, sqlitebrowser, kjots, chrome, vlc, filezilla
-#   Development: virtualbox, virtualbox-vnc, virtualbox extensions, python, java
-#                vs code, bluefish
-#   Games: dosbox
-#   Graphics: inkscape, krita, pinta
+# Load a specific vars file from this folder.

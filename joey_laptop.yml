@@ -1,0 +1,35 @@
+---
+# Steps to run as root
+- hosts: joey_laptop
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  tasks:
+  - name: "Change hostname"
+    hostname:
+      name: "{{ host_name }}"
+
+  - name: "Change time zone"
+    timezone:
+      name: "{{ time_zone }}"
+
+  - name: "Create publicly accessible folders"
+    file:
+      path: "/{{ folder_name }}"
+      owner: root
+      group: root
+      mode: 0777
+      state: directory
+    with_items:
+      - "data"
+      - "tmp2"
+    loop_control:
+      loop_var: folder_name
+
+  - name: "Install console software"
+    include_role:
+      name: software_packs
+    vars:
+      software_pack_list: "Ubuntu_common_console_tools"
+

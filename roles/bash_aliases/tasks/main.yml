@@ -3,11 +3,16 @@
 
 # Pass in variable user_name
 
-- name: "Download .bash_aliases"
+- name: "Download bash aliases"
   get_url:
-    url: "{{ raw_github_dotfiles_url }}/.bash_aliases"
-    dest: "/home/{{ user_name }}/.bash_aliases"
+    url: "{{ raw_github_url }}/dotfiles/master/bash/{{ bash_item }}"
+    dest: "/home/{{ user_name }}/{{ bash_item }}"
     mode: 0644
+  with_items:
+    - ".bash_aliases"
+    - ".bash_functions"
+  loop_control:
+    loop_var: bash_item
 
 - name: "Create symlink to .bash_aliases on Suse systems"
   file:

@@ -1,5 +1,5 @@
 ---
-# HOST VARIABLES for joey_leap_42_3_desktop
+# HOST VARIABLES for joey_desktop
 
 # test host
 ansible_host: 192.168.1.70

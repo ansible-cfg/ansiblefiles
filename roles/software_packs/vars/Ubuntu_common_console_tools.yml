@@ -1,15 +1,18 @@
 ---
 
 software_pack:
-  - "git-core"
+  - "aptitude"
+  - "git"
   - "htop"
   - "man"
+  - "mdadm"
   - "mc"
   - "nano"
   - "p7zip"
   - "rar"
   - "sqlite3"
   - "sshfs"
+  - "tasksel"
   - "tmux"
   - "tree"
   - "unar"
