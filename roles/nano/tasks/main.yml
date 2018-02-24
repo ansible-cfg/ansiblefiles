@@ -1,10 +1,10 @@
 ---
 # tasks file for nano
 
-# pass in variable user_name
-
 - name: "Install nano"
-  become:
+  become: yes
+  become_user: root
+  become_method: sudo
   package:
     name: nano
     state: present
@@ -12,5 +12,5 @@
 - name: "Install .nanorc"
   get_url:
     url: "{{ raw_github_url }}/dotfiles/master/nano/.nanorc"
-    dest: "/home/{{ user_name }}/.nanorc"
+    dest: "/home/{{ ansible_user_id }}/.nanorc"
     mode: 0644

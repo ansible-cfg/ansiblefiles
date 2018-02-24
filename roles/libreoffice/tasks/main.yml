@@ -1,0 +1,5 @@
+---
+# tasks file for libreoffice
+
+- name: "Select LibreOffice to install"
+  include_tasks: "libreoffice_{{ ansible_distribution }}.yml"

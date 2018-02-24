@@ -1,4 +1,8 @@
 ---
+# Bugs as of this writing:
+#   include_role does not work with looping, so have to specify each task individually
+#   sometimes software installations will get marked as changed even if they do not change
+
 # Steps to run as root
 - hosts: joey_laptop
   become: yes
@@ -22,8 +26,9 @@
       mode: 0777
       state: directory
     with_items:
-      - "data"
-      - "tmp2"
+      - data
+      - tmp2
+      - work
     loop_control:
       loop_var: folder_name
 
@@ -31,25 +36,51 @@
     include_role:
       name: software_packs
     vars:
-      software_pack_list: "common_console_tools"
+      software_pack_list: common_console_tools
 
   - name: "Install KDE applications"
     include_role:
       name: software_packs
     vars:
-      software_pack_list: "kde_tools"
+      software_pack_list: kde_tools
 
-  - name: "Install computer-specific applications"
-    package:
-      name:
-        - "pinta"
-        - "dosbox"
-        - "ffmpeg"
-        - "vlc"
-      state: present
+  - name: "Install other applications"
+    include_role:
+      name: software_packs
+    vars:
+      software_pack_list: other
+    tags: runme
+
+  - name: "Install LibreOffice"
+    include_role:
+      name: libreoffice
+
+  - name: "Install KeePassXC"
+    include_role:
+      name: keepassxc
+    tags: runme
 
 
 # Steps to run as user
-# - hosts: joey_laptop
+- hosts: joey_laptop
 
-#   tasks:
+  tasks:
+  - name: "Setup bash aliases"
+    include_role:
+      name: bash_aliases
+
+  - name: "Setup nano"
+    include_role:
+      name: nano
+
+  - name: "Create home bin folder"
+    file:
+      path: "/home/{{ ansible_user_id }}/bin"
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_id }}"
+      mode: 0755
+      state: directory
+
+  - name: "Set up git"
+    include_role:
+      name: git

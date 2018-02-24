@@ -1,0 +1,24 @@
+---
+# tasks file for git
+
+# Variables: user_full_name, user_editor, user_email
+
+- name: "Install git"
+  become: yes
+  become_user: root
+  become_method: sudo
+  package:
+    name: git
+    state: present
+
+- name: "Configure global git settings"
+  git_config:
+    name: "{{ git_cfg.name }}"
+    scope: global
+    value: "{{ git_cfg.value }}"
+  with_items:
+    - { name: "user.name", value: "{{ user_full_name }}" }
+    - { name: "user.email", value: "{{ user_email }}" }
+    - { name: "core.editor", value: "{{ user_editor }}" }
+  loop_control:
+    loop_var: git_cfg

@@ -1,21 +1,21 @@
 ---
 
 software_pack:
-  - "aptitude"
-  - "git"
-  - "htop"
-  - "man"
-  - "mdadm"
-  - "mc"
-  - "nano"
-  - "p7zip"
-  - "rar"
-  - "sqlite3"
-  - "sshfs"
-  - "tasksel"
-  - "tmux"
-  - "tree"
-  - "unar"
-  - "unrar"
-  - "unzip"
-  - "zip"
+  - aptitude
+  - git
+  - htop
+  - man
+  - mdadm
+  - mc
+  - nano
+  - p7zip
+  - rar
+  - sqlite3
+  - sshfs
+  - tasksel
+  - tmux
+  - tree
+  - unar
+  - unrar
+  - unzip
+  - zip

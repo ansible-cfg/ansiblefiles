@@ -1,0 +1,10 @@
+---
+- name: "Add LibreOffice Fresh PPA for Ubuntu"
+  apt_repository:
+    repo: "ppa:libreoffice/ppa"
+    state: present
+
+- name: "Install LibreOffice Fresh for Ubuntu"
+  apt:
+    name: libreoffice
+    state: present

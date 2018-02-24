@@ -1,12 +1,10 @@
 ---
 # tasks file for bash_aliases
 
-# Pass in variable user_name
-
 - name: "Download bash aliases"
   get_url:
     url: "{{ raw_github_url }}/dotfiles/master/bash/{{ bash_item }}"
-    dest: "/home/{{ user_name }}/{{ bash_item }}"
+    dest: "/home/{{ ansible_user_id }}/{{ bash_item }}"
     mode: 0644
   with_items:
     - ".bash_aliases"
@@ -16,7 +14,7 @@
 
 - name: "Create symlink to .bash_aliases on Suse systems"
   file:
-    path: "/home/{{ user_name }}/.alias"
-    src: "/home/{{ user_name }}/.bash_aliases"
+    path: "/home/{{ ansible_user_id }}/.alias"
+    src: "/home/{{ ansible_user_id }}/.bash_aliases"
     state: link
   when: ansible_os_family == "Suse"

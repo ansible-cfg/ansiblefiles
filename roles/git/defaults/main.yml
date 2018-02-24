@@ -1,0 +1,6 @@
+---
+# defaults file for git
+
+user_full_name: "Joey Rockhold"
+user_email: "joeysbytesdev@gmail.com"
+user_editor: nano
