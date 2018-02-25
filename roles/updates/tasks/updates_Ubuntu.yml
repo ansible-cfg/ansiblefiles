@@ -7,7 +7,7 @@
     update_cache: yes
 
 # If docker-compose is not installed, this throws an error and stdout is an empty string
-- name: "Check if docker-compose installed"
+- name: "Check if docker-compose is installed"
   shell: docker-compose --version
   register: docker_compose_installed
   ignore_errors: True
@@ -18,3 +18,16 @@
     name: docker
     tasks_from: "docker-compose_Ubuntu.yml"
   when: not docker_compose_installed.stdout == ""
+
+# If VirtualBox is not installed, this throws an error and stdout is an empty string
+- name: "Check if VirtualBox is installed"
+  shell: vboxmanage --version
+  register: virtualbox_installed
+  ignore_errors: True
+  changed_when: False
+
+- name: "Update VirtualBox extension pack"
+  include_role:
+    name: virtualbox
+    tasks_from: "virtualbox_extension_pack.yml"
+  when: not virtualbox_installed.stdout == ""
