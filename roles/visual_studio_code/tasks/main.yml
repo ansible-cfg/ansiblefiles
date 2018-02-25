@@ -1,0 +1,7 @@
+---
+# tasks file for visual_studio_code
+
+# https://code.visualstudio.com/docs/setup/linux
+
+- name: "Select Visual Studio Code to install"
+  include_tasks: "visual_studio_code_{{ my_ansible_distribution }}.yml"

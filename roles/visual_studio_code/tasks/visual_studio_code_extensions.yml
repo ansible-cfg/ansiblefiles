@@ -1,0 +1,8 @@
+---
+- name: "Install Visual Studio Code extensions"
+  shell: "code --install-extension {{ vscode_extension }}"
+  with_items:
+    - "DavidAnson.vscode-markdownlint"
+    - "ms-python.python"
+  loop_control:
+    loop_var: vscode_extension

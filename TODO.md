@@ -13,6 +13,7 @@
 * zim-wiki ppa:jaap.karssenberg/zim
 * sqlitebrowser (getting apt conflicts)
 * Anaconda
+* Common python libraries: pylint, colorama, requests
 
 ## Configuration
 

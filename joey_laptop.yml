@@ -3,10 +3,11 @@
 #   include_role does not work with looping, so have to specify each as an individual task
 #   sometimes software installations will get notified as changed even if they do not change
 
+################################################################################
 # Steps to run as root
+################################################################################
 - hosts: joey_laptop
   become: yes
-
   vars:
     user_name: joey
     user_group: joey
@@ -78,10 +79,15 @@
       docker_user: "{{ user_name }}"
       docker_enabled: False
 
+  - name: "Install Visual Studio Code"
+    include_role:
+      name: visual_studio_code
 
+
+################################################################################
 # Steps to run as user
+################################################################################
 - hosts: joey_laptop
-
   vars:
     user_name: joey
     user_group: joey
@@ -145,15 +151,19 @@
       owner: "{{ user_name }}"
       group: "{{ user_group }}"
       mode: 0775
-    tags: runme
 
   - name: "Create link to development folder"
     file:
       src: "/work/development"
       path: "/home/{{ user_name }}/Development"
       state: link
-    tags: runme
 
   - name: "Set up git"
     include_role:
       name: git
+
+  - name: "Install Visual Studio Code extensions"
+    include_role:
+      name: visual_studio_code
+      tasks_from: "visual_studio_code_extensions.yml"
+    tags: runme
