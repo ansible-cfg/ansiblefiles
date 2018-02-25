@@ -5,3 +5,16 @@
     name: "*"
     state: latest
     update_cache: yes
+
+# If docker-compose is not installed, this throws an error and stdout is an empty string
+- name: "Check if docker-compose installed"
+  shell: docker-compose --version
+  register: docker_compose_installed
+  ignore_errors: True
+  changed_when: False
+
+- name: "Update docker-compose"
+  include_role:
+    name: docker
+    tasks_from: "docker-compose_Ubuntu.yml"
+  when: not docker_compose_installed.stdout == ""

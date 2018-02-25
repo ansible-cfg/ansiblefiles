@@ -4,7 +4,6 @@
 
 * DropBox (python-gpgme is a dependency)
 * Visual Studio Code + extensions
-* docker-compose
 * Multimedia tools: OBS Studio / Kdenlive / KWave / Audacity
 * Ubuntu gui tool for hardware drivers
 * Google Chrome
