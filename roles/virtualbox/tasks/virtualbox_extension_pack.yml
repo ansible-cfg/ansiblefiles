@@ -1,0 +1,71 @@
+---
+- name: "Get version of VirtualBox installed"
+  shell: vboxmanage --version|cut -f1 -dr
+  register: vbox_version
+  changed_when: False
+
+- name: "Get revision number of VirtualBox installed"
+  shell: vboxmanage --version|cut -f2 -dr
+  register: vbox_revision
+  changed_when: False
+
+- name: "Check if VirtualBox extension pack is installed"
+  shell: vboxmanage list extpacks|grep "Oracle VM VirtualBox Extension Pack"|cut -f2 -d:|sed -e 's/^[[:space:]]*//'
+  register: vbox_ext_installed
+  changed_when: False
+
+- name: "Get VirtualBox extension pack version"
+  shell: vboxmanage list extpacks|grep -A2 "Oracle VM VirtualBox Extension Pack"|grep "Version:"|cut -f2 -d:|sed -e 's/^[[:space:]]*//'
+  register: vbox_ext_version
+  when: vbox_ext_installed.stdout == "Oracle VM VirtualBox Extension Pack"
+  changed_when: False
+
+- name: "Get VirtualBox extension pack revision number"
+  shell: vboxmanage list extpacks|grep -A2 "Oracle VM VirtualBox Extension Pack"|grep "Revision:"|cut -f2 -d:|sed -e 's/^[[:space:]]*//'
+  register: vbox_ext_revision
+  when: vbox_ext_installed.stdout == "Oracle VM VirtualBox Extension Pack"
+  changed_when: False
+
+- name: "Set fact for VirtualBox extension pack file name"
+  set_fact:
+    vbox_ext_pack_filename: "Oracle_VM_VirtualBox_Extension_Pack-{{ vbox_version.stdout }}-{{ vbox_revision.stdout }}.vbox-extpack"
+
+- name: "Set fact to skip installing VirtualBox extension pack"
+  set_fact:
+    install_vbox_ext_pack: False
+  when: ((vbox_ext_installed.stdout == "Oracle VM VirtualBox Extension Pack") and (vbox_ext_version.stdout == vbox_version.stdout) and (vbox_ext_revision.stdout == vbox_revision.stdout))
+
+- name: "Set fact to install VirtualBox extension pack"
+  set_fact:
+    install_vbox_ext_pack: True
+  when: install_vbox_ext_pack is not defined
+
+- name: "Get SHA256SUMS file for VirtualBox extension pack"
+  get_url:
+    url: "https://download.virtualbox.org/virtualbox/{{ vbox_version.stdout }}/SHA256SUMS"
+    dest: "/tmp/{{ vbox_ext_pack_filename }}.sha256sum"
+    mode: 0666
+  when: install_vbox_ext_pack
+
+- name: "Extract SHA256SUM for VirtualBox extension pack"
+  shell: "cat /tmp/{{ vbox_ext_pack_filename }}.sha256sum|grep {{ vbox_ext_pack_filename }}|cut -f1 -d' '"
+  register: vbox_ext_pack_sha256sum
+  changed_when: False
+  when: install_vbox_ext_pack
+
+- name: "Download VirtualBox extension pack"
+  get_url:
+    url: "https://download.virtualbox.org/virtualbox/{{ vbox_version.stdout }}/Oracle_VM_VirtualBox_Extension_Pack-{{ vbox_version.stdout }}-{{ vbox_revision.stdout }}.vbox-extpack"
+    dest: "/tmp/Oracle_VM_VirtualBox_Extension_Pack-{{ vbox_version.stdout }}-{{ vbox_revision.stdout }}.vbox-extpack"
+    mode: 0666
+    sha256sum: "{{ vbox_ext_pack_sha256sum.stdout }}"
+  when: install_vbox_ext_pack
+
+- name: "Install VirtualBox extension pack"
+  expect:
+    command: /bin/bash -c "vboxmanage extpack install --replace /tmp/{{ vbox_ext_pack_filename }}"
+    responses:
+      'Do you agree to these license terms and conditions (y/n)?': "y"
+  when: install_vbox_ext_pack
+
+# delete download when done? letting tmp processes handle this

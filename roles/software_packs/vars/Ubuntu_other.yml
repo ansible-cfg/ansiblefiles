@@ -5,3 +5,6 @@ software_pack:
   - ffmpeg
   - pinta
   - vlc
+
+  # python 2 version needed for Ansible expect module, python 3 version already installed
+  - python-pexpect

@@ -1,0 +1,32 @@
+---
+# Variables: virtualbox_version, virtualbox_user
+
+- name: "Install dkms for Ubuntu"
+  apt:
+    name: dkms
+    state: present
+
+- name: "Add VirtualBox key for Ubuntu"
+  apt_key:
+    url: "https://www.virtualbox.org/download/oracle_vbox_2016.asc"
+    id: "B9F8D658297AF3EFC18D5CDFA2F683C52980AECF"
+    state: present
+
+- name: "Add VirtualBox deb for Ubuntu"
+  apt_repository:
+    repo: "deb https://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
+    state: present
+
+- name: "Install VirtualBox for Ubuntu"
+  apt:
+    name: "virtualbox-{{ virtualbox_version }}"
+    state: present
+
+- name: "Add vboxusers group to user: {{ virtualbox_user }}"
+  user:
+    name: "{{ virtualbox_user }}"
+    groups: vboxusers
+    append: yes
+
+- name: "Install VirtualBox extension pack"
+  include_tasks: virtualbox_extension_pack.yml

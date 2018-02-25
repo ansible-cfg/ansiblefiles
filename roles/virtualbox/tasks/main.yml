@@ -1,0 +1,7 @@
+---
+# tasks file for virtualbox
+
+# https://www.virtualbox.org/wiki/Linux_Downloads
+
+- name: "Select VirtualBox to install"
+  include_tasks: "virtualbox_{{ ansible_distribution }}.yml"

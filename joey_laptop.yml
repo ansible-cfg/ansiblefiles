@@ -61,7 +61,16 @@
   - name: "Install Etcher"
     include_role:
       name: etcher
+
+  - name: "Install VirtualBox"
+    include_role:
+      name: virtualbox
+    vars:
+      virtualbox_version: "5.2"
+      virtualbox_user: joey
     tags: runme
+
+
 
 # Steps to run as user
 - hosts: joey_laptop
