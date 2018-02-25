@@ -27,6 +27,3 @@
     name: "{{ virtualbox_user }}"
     groups: vboxusers
     append: yes
-
-- name: "Install VirtualBox extension pack"
-  include_tasks: virtualbox_extension_pack.yml

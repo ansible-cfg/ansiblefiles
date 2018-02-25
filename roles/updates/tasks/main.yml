@@ -1,0 +1,5 @@
+---
+# tasks file for updates
+
+- name: "Select updates to install"
+  include_tasks: "updates_{{ my_ansible_distribution }}.yml"

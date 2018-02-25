@@ -4,4 +4,7 @@
 # https://www.virtualbox.org/wiki/Linux_Downloads
 
 - name: "Select VirtualBox to install"
-  include_tasks: "virtualbox_{{ ansible_distribution }}.yml"
+  include_tasks: "virtualbox_{{ my_ansible_distribution }}.yml"
+
+- name: "Install VirtualBox extension pack"
+  include_tasks: "virtualbox_extension_pack.yml"

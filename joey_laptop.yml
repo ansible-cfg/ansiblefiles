@@ -6,8 +6,9 @@
 # Steps to run as root
 - hosts: joey_laptop
   become: yes
-  become_user: root
-  become_method: sudo
+
+  vars:
+    user_name: joey
 
   tasks:
   - name: "Change hostname"
@@ -67,15 +68,15 @@
       name: virtualbox
     vars:
       virtualbox_version: "5.2"
-      virtualbox_user: joey
+      virtualbox_user: "{{ user_name }}"
 
   - name: "Install Docker"
     include_role:
       name: docker
     vars:
-      docker_user: joey
+      docker_user: "{{ user_name }}"
       docker_enabled: False
-    tags: runme
+
 
 
 

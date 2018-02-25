@@ -5,8 +5,6 @@
 
 - name: "Install git"
   become: yes
-  become_user: root
-  become_method: sudo
   package:
     name: git
     state: present

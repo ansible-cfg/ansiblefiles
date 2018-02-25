@@ -1,0 +1,25 @@
+---
+# NOTE: This is not working consistently.
+
+- hosts: joey_laptop
+  become: yes
+  serial: 1
+
+  tasks:
+  - name: "Before reboot ping"
+    ping:
+
+  - name: "Reboot the server"
+    command: sleep 5 && /sbin/reboot
+    ignore_errors: yes
+    async: 1
+    poll: 0
+
+  - name: "Wait for reconnection"
+    wait_for_connection:
+      delay: 10
+      sleep: 5
+      timeout: 120
+
+  - name: "After reboot ping"
+    ping:

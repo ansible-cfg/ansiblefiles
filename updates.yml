@@ -1,0 +1,8 @@
+---
+- hosts: joey_laptop
+  become: yes
+
+  tasks:
+  - name: "Update all installed packages"
+    include_role:
+      name: updates

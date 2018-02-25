@@ -9,5 +9,12 @@ ansible_host: 192.168.1.70
 
 ansible_connection: ssh
 ansible_user: joey
+ansible_become_method: sudo
+ansible_become_user: root
 
 host_name: e7240
+
+# Some special distributions report values that need to be something else.
+# These variables are meant to be used instead of ansible facts
+
+my_ansible_distribution: Ubuntu
