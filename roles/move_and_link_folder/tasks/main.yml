@@ -1,0 +1,99 @@
+---
+# tasks file for move_and_link_folder
+
+# Variables: source_dir, dest_dir
+
+- name: "Set fact for whether each step should continue"
+  set_fact:
+    move_and_link_continue: True
+
+- name: "Get stats about source folder: {{ source_dir }}"
+  stat:
+    path: "{{ source_dir }}"
+  register: source_stats
+  when:
+    - move_and_link_continue
+
+- name: "Fail if source folder does not exist: {{ source_dir }}"
+  fail:
+    msg: "Source folder does not exist: {{ source_dir }}"
+  when:
+    - move_and_link_continue
+    - not source_stats.stat.exists
+
+- name: "Stop if source folder is already a link: {{ source_dir }}"
+  set_fact:
+    move_and_link_continue: False
+  when:
+    - move_and_link_continue
+    - source_stats.stat.islnk
+
+- name: "Fail if source is not a folder: {{ source_dir }}"
+  fail:
+    msg: "Source is not a folder: {{ source_dir }}"
+  when:
+    - move_and_link_continue
+    - not source_stats.stat.isdir
+
+- name: "Count files and folders inside source folder: {{ source_dir }}"
+  shell: "ls -a {{ source_dir }}|wc -l"
+  register: source_file_count
+  changed_when: False
+  when:
+    - move_and_link_continue
+
+- name: "Stop processing if source folder is not empty: {{ source_dir }}"
+  set_fact:
+    move_and_link_continue: False
+  when:
+    - move_and_link_continue
+    - not source_file_count.stdout == "2"
+
+- name: "Get stats about destination folder: {{ dest_dir }}"
+  stat:
+    path: "{{ dest_dir }}"
+  register: dest_stats
+  when:
+    - move_and_link_continue
+
+- name: "Fail if destination folder exists and is not a folder: {{ dest_dir }}"
+  fail:
+    msg: "Destination exists and is not a folder: {{ dest_dir }}"
+  when:
+    - move_and_link_continue
+    - dest_stats.stat.exists
+    - not dest_stats.stat.isdir
+
+- name: "Create destination folder: {{ dest_dir }}"
+  file:
+    path: "{{ dest_dir }}"
+    state: directory
+    owner: "{{ source_stats.stat.pw_name }}"
+    group: "{{ source_stats.stat.gr_name }}"
+    mode: "{{ source_stats.stat.mode }}"
+  when:
+    - move_and_link_continue
+    - not dest_stats.stat.exists
+
+- name: "Delete source folder: {{ source_dir }}"
+  file:
+    path: "{{ source_dir }}"
+    state: absent
+  when:
+    - move_and_link_continue
+
+- name: "Create link from {{ source_dir }} to {{ dest_dir }}"
+  file:
+    src: "{{ dest_dir }}"
+    path: "{{ source_dir }}"
+    state: link
+  when:
+    - move_and_link_continue
+
+# ok: [joey_laptop] => {"changed": false, "stat": {"atime": 1519592481.554918, "attr_flags": "e", "attributes": ["extents"],
+# "block_size": 4096, "blocks": 8, "charset": "binary", "ctime": 1519592451.0545125, "dev": 2049, "device_type": 0,
+# "executable": true, "exists": true, "gid": 1000, "gr_name": "joey", "inode": 425240, "isblk": false, "ischr": false,
+# "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false,
+# "mimetype": "inode/directory", "mode": "0755", "mtime": 1519592451.0545125, "nlink": 4, "path": "/home/joey/Documents",
+# "pw_name": "joey", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4096, "uid": 1000,
+# "version": "1381070430", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}

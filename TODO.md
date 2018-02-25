@@ -12,12 +12,10 @@
 * Printer: Brother HL-2270DW
 * zim-wiki ppa:jaap.karssenberg/zim
 * sqlitebrowser (getting apt conflicts)
-* updates: add virtualbox extensions, add docker-compose
 * Anaconda
 
 ## Configuration
 
-* Move home folders
 * hosts file
 * Firewall
 * Install ssh keys

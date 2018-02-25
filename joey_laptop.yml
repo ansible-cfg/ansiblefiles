@@ -9,6 +9,7 @@
 
   vars:
     user_name: joey
+    user_group: joey
 
   tasks:
   - name: "Change hostname"
@@ -76,12 +77,14 @@
     vars:
       docker_user: "{{ user_name }}"
       docker_enabled: False
-    tags: runme
-
 
 
 # Steps to run as user
 - hosts: joey_laptop
+
+  vars:
+    user_name: joey
+    user_group: joey
 
   tasks:
   - name: "Setup bash aliases"
@@ -99,6 +102,57 @@
       group: "{{ ansible_user_id }}"
       mode: 0755
       state: directory
+
+  - name: "Move directories from home to data and create symlink: Documents"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ user_name }}/Documents"
+      dest_dir: "/data/{{ user_name }}/documents"
+
+  - name: "Move directories from home to data and create symlink: Downloads"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ user_name }}/Downloads"
+      dest_dir: "/data/{{ user_name }}/downloads"
+
+  - name: "Move directories from home to data and create symlink: Music"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ user_name }}/Music"
+      dest_dir: "/data/{{ user_name }}/music"
+
+  - name: "Move directories from home to data and create symlink: Pictures"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ user_name }}/Pictures"
+      dest_dir: "/data/{{ user_name }}/pictures"
+
+  - name: "Move directories from home to data and create symlink: Videos"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ user_name }}/Videos"
+      dest_dir: "/data/{{ user_name }}/videos"
+
+  - name: "Create development folder"
+    file:
+      path: "/work/development"
+      state: directory
+      owner: "{{ user_name }}"
+      group: "{{ user_group }}"
+      mode: 0775
+    tags: runme
+
+  - name: "Create link to development folder"
+    file:
+      src: "/work/development"
+      path: "/home/{{ user_name }}/Development"
+      state: link
+    tags: runme
 
   - name: "Set up git"
     include_role:
