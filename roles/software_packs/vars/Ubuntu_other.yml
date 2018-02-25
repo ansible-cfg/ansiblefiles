@@ -8,3 +8,12 @@ software_pack:
 
   # python 2 version needed for Ansible expect module, python 3 version already installed
   - python-pexpect
+  - python3-pexpect
+
+  # for python use in general
+  - pylint
+  - pylint3
+  - python-colorama
+  - python3-colorama
+  - python-requests
+  - python3-requests

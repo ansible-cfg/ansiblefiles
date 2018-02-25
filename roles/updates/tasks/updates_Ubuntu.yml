@@ -31,3 +31,6 @@
     name: virtualbox
     tasks_from: "virtualbox_extension_pack.yml"
   when: not virtualbox_installed.stdout == ""
+
+# Visual Studio Code extensions are self-updating if you set extensions.autoUpdate = True
+
