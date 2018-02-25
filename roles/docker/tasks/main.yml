@@ -1,0 +1,8 @@
+---
+# tasks file for docker
+
+# https://docs.docker.com/install/linux/docker-ce/ubuntu/
+# https://docs.docker.com/install/linux/linux-postinstall/
+
+- name: "Select Docker to install"
+  include_tasks: "docker_{{ ansible_distribution }}.yml"

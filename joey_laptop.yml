@@ -68,6 +68,13 @@
     vars:
       virtualbox_version: "5.2"
       virtualbox_user: joey
+
+  - name: "Install Docker"
+    include_role:
+      name: docker
+    vars:
+      docker_user: joey
+      docker_enabled: False
     tags: runme
 
 

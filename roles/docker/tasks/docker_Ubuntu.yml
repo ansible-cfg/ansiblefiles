@@ -1,0 +1,47 @@
+---
+# variables: docker_user, docker_enabled
+
+- name: "Install Docker pre-requisites for Ubuntu"
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    state: present
+
+- name: "Add Docker GPG key for Ubuntu"
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+    state: present
+
+- name: "Add Docker deb for Ubuntu"
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: "Install Docker for Ubuntu"
+  apt:
+    name: docker-ce
+    state: present
+
+- name: "Add docker group to user: {{ docker_user }}"
+  user:
+    name: "{{ docker_user }}"
+    groups: docker
+    append: yes
+
+- name: "Disable docker service"
+  systemd:
+    enabled: no
+    name: docker
+    state: stopped
+  when: not docker_enabled
+
+- name: "Enable docker service"
+  systemd:
+    enabled: yes
+    name: docker
+    state: started
+  when: docker_enabled
