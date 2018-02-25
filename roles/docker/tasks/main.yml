@@ -3,6 +3,10 @@
 
 # https://docs.docker.com/install/linux/docker-ce/ubuntu/
 # https://docs.docker.com/install/linux/linux-postinstall/
+# https://docs.docker.com/compose/install/install-compose
 
 - name: "Select Docker to install"
   include_tasks: "docker_{{ my_ansible_distribution }}.yml"
+
+- name: "Select docker-compose to install"
+  include_tasks: "docker-compose_{{ my_ansible_distribution }}.yml"

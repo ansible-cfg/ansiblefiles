@@ -2,6 +2,7 @@
 
 software_pack:
   - aptitude
+  - curl
   - git
   - htop
   - man
@@ -18,4 +19,5 @@ software_pack:
   - unar
   - unrar
   - unzip
+  - wget
   - zip

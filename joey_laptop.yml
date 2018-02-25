@@ -76,7 +76,7 @@
     vars:
       docker_user: "{{ user_name }}"
       docker_enabled: False
-
+    tags: runme
 
 
 

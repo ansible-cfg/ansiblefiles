@@ -1,0 +1,52 @@
+---
+
+- name: "Download docker-compose GitHub releases web page"
+  get_url:
+    url: "https://github.com/docker/compose/releases"
+    dest: "/tmp/docker-compose-releases.html"
+
+- name: "Get latest released version of docker-compose"
+  shell: cat /tmp/docker-compose-releases.html|grep -E "(\/docker\-compose\-Linux\-x86\_64)+"|grep -Ev "(\-rc)+"|head -1|cut -f6 -d/
+  register: docker_compose_version
+  changed_when: False
+
+# If this errors out, docker-compose is not installed and stdout is empty string
+- name: "Get version of docker-compose installed"
+  shell: docker-compose --version|cut -f3 -d" "|cut -f1 -d,
+  register: docker_compose_installed_version
+  changed_when: False
+  ignore_errors: yes
+
+- name: "Set fact docker-compose to be installed"
+  set_fact:
+    install_docker_compose: True
+  when: not docker_compose_installed_version.stdout == docker_compose_version.stdout
+
+- name: "Set fact that latest version of docker-compose is already installed"
+  set_fact:
+    install_docker_compose: False
+  when: docker_compose_installed_version.stdout == docker_compose_version.stdout
+
+- name: "Download docker-compose sha256sum file"
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version.stdout }}/docker-compose-Linux-x86_64.sha256"
+    dest: "/tmp/docker-compose-Linux-x86_64.sha256"
+    mode: 0666
+  when: install_docker_compose
+
+- name: "Retrieve docker-compose sha256sum value"
+  shell: cat /tmp/docker-compose-Linux-x86_64.sha256
+  register: docker_compose_sha256sum
+  changed_when: False
+  when: install_docker_compose
+
+- name: "Download docker-compose"
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version.stdout }}/docker-compose-Linux-x86_64"
+    dest: "/usr/local/bin/docker-compose"
+    sha256sum: "{{ docker_compose_sha256sum.stdout }}"
+    owner: root
+    group: root
+    mode: 0755
+    force: yes
+  when: install_docker_compose
