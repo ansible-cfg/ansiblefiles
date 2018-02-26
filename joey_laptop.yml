@@ -83,6 +83,11 @@
     include_role:
       name: visual_studio_code
 
+  - name: "Install DropBox"
+    include_role:
+      name: dropbox
+    tags: runme
+
 
 ################################################################################
 # Steps to run as user
@@ -166,4 +171,3 @@
     include_role:
       name: visual_studio_code
       tasks_from: "visual_studio_code_extensions.yml"
-    tags: runme

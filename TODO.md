@@ -2,8 +2,6 @@
 
 ## Installations
 
-* DropBox (python-gpgme is a dependency)
-* Visual Studio Code + extensions
 * Multimedia tools: OBS Studio / Kdenlive / KWave / Audacity
 * Ubuntu gui tool for hardware drivers
 * Google Chrome

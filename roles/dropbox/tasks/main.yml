@@ -1,0 +1,7 @@
+---
+# tasks file for dropbox
+
+# https://www.dropbox.com/install
+
+- name: "Select DropBox to install"
+  include_tasks: "dropbox_{{ my_ansible_distribution }}.yml"
