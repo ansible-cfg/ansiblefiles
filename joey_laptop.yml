@@ -5,6 +5,8 @@
 #
 # Software installations work MUCH better if aptitude is installed ahead of time,
 # and all updates are already installed.
+#
+# Remember to install openssh-server first, and connect manually to get host key added
 
 ################################################################################
 # Steps to run as root
