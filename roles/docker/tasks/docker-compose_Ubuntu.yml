@@ -4,6 +4,7 @@
   get_url:
     url: "https://github.com/docker/compose/releases"
     dest: "/tmp/docker-compose-releases.html"
+  changed_when: False
 
 - name: "Get latest released version of docker-compose"
   shell: cat /tmp/docker-compose-releases.html|grep -E "(\/docker\-compose\-Linux\-x86\_64)+"|grep -Ev "(\-rc)+"|head -1|cut -f6 -d/

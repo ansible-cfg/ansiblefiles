@@ -12,7 +12,7 @@
     id: "B9F8D658297AF3EFC18D5CDFA2F683C52980AECF"
     state: present
 
-- name: "Add VirtualBox deb for Ubuntu"
+- name: "Add VirtualBox repository for Ubuntu"
   apt_repository:
     repo: "deb https://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
     state: present

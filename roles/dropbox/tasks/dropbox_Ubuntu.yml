@@ -1,6 +1,6 @@
 ---
 
-- name: "Install python-gpgme dependency for DropBox"
+- name: "Install python-gpgme dependency for DropBox for Ubuntu"
   apt:
     name:
       - python-gpgme
@@ -13,7 +13,7 @@
   changed_when: False
   ignore_errors: yes
 
-- name: "Download DropBox"
+- name: "Download DropBox for Ubuntu"
   get_url:
     url: "https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb"
     dest: "/tmp/dropbox_2015.10.28_amd64.deb"
@@ -22,7 +22,7 @@
     group: root
   when: dropbox_status.stdout == ""
 
-- name: "Install DropBox"
+- name: "Install DropBox for Ubuntu"
   apt:
     deb: "/tmp/dropbox_2015.10.28_amd64.deb"
   when: dropbox_status.stdout == ""

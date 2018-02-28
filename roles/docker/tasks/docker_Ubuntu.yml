@@ -16,7 +16,7 @@
     id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
     state: present
 
-- name: "Add Docker deb for Ubuntu"
+- name: "Add Docker repository for Ubuntu"
   apt_repository:
     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
     state: present
@@ -32,14 +32,14 @@
     groups: docker
     append: yes
 
-- name: "Disable docker service"
+- name: "Disable docker service for Ubuntu"
   systemd:
     enabled: no
     name: docker
     state: stopped
   when: not docker_enabled
 
-- name: "Enable docker service"
+- name: "Enable docker service for Ubuntu"
   systemd:
     enabled: yes
     name: docker

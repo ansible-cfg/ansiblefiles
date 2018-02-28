@@ -1,0 +1,28 @@
+---
+# tasks file for copy_ssh_keys
+
+- name: "Create ssh folder in home directory for user: {{ user_name }}"
+  file:
+    path: "/home/{{ user_name }}/.ssh"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0700
+
+- name: "Copy ssh private key"
+  copy:
+    src: "/home/{{ user_name }}/.ssh/id_rsa"
+    dest: "/home/{{ user_name }}/.ssh/id_rsa"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0600
+    force: no
+
+- name: "Copy ssh public key"
+  copy:
+    src: "/home/{{ user_name }}/.ssh/id_rsa.pub"
+    dest: "/home/{{ user_name }}/.ssh/id_rsa.pub"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+    force: no

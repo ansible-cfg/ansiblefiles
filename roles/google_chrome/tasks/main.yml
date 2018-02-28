@@ -1,0 +1,8 @@
+---
+# tasks file for Google Chrome
+
+# https://www.google.com/linuxrepositories/
+# https://tecadmin.net/install-google-chrome-in-ubuntu/
+
+- name: "Select Google Chrome to install"
+  include_tasks: "google_chrome_{{ my_ansible_distribution }}.yml"

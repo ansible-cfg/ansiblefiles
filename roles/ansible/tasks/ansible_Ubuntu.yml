@@ -1,0 +1,16 @@
+---
+
+- name: "Install Ansible pre-requisites for Ubuntu"
+  apt:
+    name: software-properties-common
+    state: present
+
+- name: "Add Ansible PPA for Ubuntu"
+  apt_repository:
+    repo: "ppa:ansible/ansible"
+    state: present
+
+- name: "Install Ansible for Ubuntu"
+  apt:
+    name: ansible
+    state: present

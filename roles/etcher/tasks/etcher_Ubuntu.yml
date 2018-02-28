@@ -1,5 +1,5 @@
 ---
-- name: "Add Bintray.com GPG key for Etcher"
+- name: "Add Bintray.com GPG key for Etcher for Ubuntu"
   apt_key:
     keyserver: "hkp://pgp.mit.edu:80"
     id: "379CE192D401AB61"

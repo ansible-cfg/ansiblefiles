@@ -3,34 +3,32 @@
 ## Installations
 
 * Multimedia tools: OBS Studio / Kdenlive / KWave / Audacity
-* Ubuntu gui tool for hardware drivers
-* Google Chrome
-* Install Ansible itself
 * Java / Eclipse tool suite
 * Printer: Brother HL-2270DW
 * zim-wiki ppa:jaap.karssenberg/zim
 * sqlitebrowser (getting apt conflicts)
 * Anaconda
+* Intel firmware
 
 ## Configuration
 
 * hosts file
 * Firewall
-* Install ssh keys
 * Lock down ssh
 * connect to unmounted raid
+* download git repos I always use
 
 ## Preferences
 
 * Visual Studio Code
 * Kate
-* VirtualBox (set virtual machine path)
 * Desktop background
 * KDE menu (layout, favorites)
 
 ## Other
 
 * reboot (not working well)
+* break playbook up by root, user tasks
 
 ## Not installing at this time
 

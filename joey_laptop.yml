@@ -2,6 +2,9 @@
 # Bugs as of this writing:
 #   include_role does not work with looping, so have to specify each as an individual task
 #   sometimes software installations will get notified as changed even if they do not change
+#
+# Software installations work MUCH better if aptitude is installed ahead of time,
+# and all updates are already installed.
 
 ################################################################################
 # Steps to run as root
@@ -35,6 +38,11 @@
     loop_control:
       loop_var: folder_name
 
+  - name: "Add Canonical Partner Repository"
+    apt_repository:
+      repo: "deb http://archive.canonical.com/ubuntu {{ ansible_distribution_release }} partner"
+      state: present
+
   - name: "Install console software"
     include_role:
       name: software_packs
@@ -65,6 +73,22 @@
     include_role:
       name: etcher
 
+  - name: "Install Visual Studio Code"
+    include_role:
+      name: visual_studio_code
+
+  - name: "Install DropBox"
+    include_role:
+      name: dropbox
+
+  - name: "Install Google Chrome"
+    include_role:
+      name: google_chrome
+
+  - name: "Install Ansible"
+    include_role:
+      name: ansible
+
   - name: "Install VirtualBox"
     include_role:
       name: virtualbox
@@ -77,16 +101,7 @@
       name: docker
     vars:
       docker_user: "{{ user_name }}"
-      docker_enabled: False
-
-  - name: "Install Visual Studio Code"
-    include_role:
-      name: visual_studio_code
-
-  - name: "Install DropBox"
-    include_role:
-      name: dropbox
-    tags: runme
+      docker_enabled: True
 
 
 ################################################################################
@@ -98,14 +113,6 @@
     user_group: joey
 
   tasks:
-  - name: "Setup bash aliases"
-    include_role:
-      name: bash_aliases
-
-  - name: "Setup nano"
-    include_role:
-      name: nano
-
   - name: "Create home bin folder"
     file:
       path: "/home/{{ ansible_user_id }}/bin"
@@ -126,7 +133,31 @@
       name: move_and_link_folder
     vars:
       source_dir: "/home/{{ user_name }}/Downloads"
-      dest_dir: "/data/{{ user_name }}/downloads"
+      dest_dir: "/work/downloads"
+
+  - name: "Create downloads iso folder"
+    file:
+      path: "/home/{{ user_name }}/Downloads/iso"
+      state: directory
+      owner: "{{ user_name }}"
+      group: "{{ user_group }}"
+      mode: 0755
+      follow: yes
+
+  - name: "Create downloads save folder"
+    file:
+      path: "/data/{{ user_name }}/downloads"
+      state: directory
+      owner: "{{ user_name }}"
+      group: "{{ user_group }}"
+      mode: 0755
+
+  - name: "Create symlink to downloads save folder"
+    file:
+      src: "/data/{{ user_name }}/downloads"
+      path: "/home/{{ user_name }}/Downloads/save"
+      state: link
+      follow: yes
 
   - name: "Move directories from home to data and create symlink: Music"
     include_role:
@@ -155,7 +186,7 @@
       state: directory
       owner: "{{ user_name }}"
       group: "{{ user_group }}"
-      mode: 0775
+      mode: 0755
 
   - name: "Create link to development folder"
     file:
@@ -163,9 +194,35 @@
       path: "/home/{{ user_name }}/Development"
       state: link
 
+  - name: "Create VirtualBox working folder"
+    file:
+      path: "/work/virtualbox"
+      state: directory
+      owner: "{{ user_name }}"
+      group: "{{ user_group }}"
+      mode: 0755
+
+  - name: "Create symlink to VirtualBox working folder"
+    file:
+      src: "/work/virtualbox"
+      path: "/home/{{ user_name }}/VirtualBox VMs"
+      state: link
+
+  - name: "Setup bash aliases"
+    include_role:
+      name: bash_aliases
+
+  - name: "Setup nano"
+    include_role:
+      name: nano
+
   - name: "Set up git"
     include_role:
       name: git
+
+  - name: "Copy ssh key files"
+    include_role:
+      name: copy_ssh_keys
 
   - name: "Install Visual Studio Code extensions"
     include_role:

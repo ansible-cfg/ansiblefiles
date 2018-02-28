@@ -1,0 +1,7 @@
+---
+# tasks file for ansible
+
+# http://docs.ansible.com/ansible/latest/intro_installation.html#latest-releases-via-apt-ubuntu
+
+- name: "Select Ansible to install"
+  include_tasks: "ansible_{{ my_ansible_distribution }}.yml"
