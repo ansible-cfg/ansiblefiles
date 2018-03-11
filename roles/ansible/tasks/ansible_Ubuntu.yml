@@ -4,13 +4,16 @@
   apt:
     name: software-properties-common
     state: present
+  become: yes
 
 - name: "Add Ansible PPA for Ubuntu"
   apt_repository:
     repo: "ppa:ansible/ansible"
     state: present
+  become: yes
 
 - name: "Install Ansible for Ubuntu"
   apt:
     name: ansible
     state: present
+  become: yes

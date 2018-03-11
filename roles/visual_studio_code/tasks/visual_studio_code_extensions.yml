@@ -1,12 +1,12 @@
 ---
 # Must be run as user
 
+# Parameters: vscode_extensions
+
 - name: "Install Visual Studio Code extensions"
   shell: "code --install-extension {{ vscode_extension }}"
   register: vscode_ext_installed
   changed_when: "not vscode_ext_installed.stdout|search('is already installed')"
-  with_items:
-    - "DavidAnson.vscode-markdownlint"
-    - "ms-python.python"
+  with_items: "{{ vscode_extensions }}"
   loop_control:
     loop_var: vscode_extension

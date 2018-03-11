@@ -51,3 +51,4 @@
     mode: 0755
     force: yes
   when: install_docker_compose
+  become: yes

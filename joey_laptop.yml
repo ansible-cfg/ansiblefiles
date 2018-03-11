@@ -1,7 +1,8 @@
 ---
-# Bugs as of this writing:
+# Bugs as of this writing (Ansible v2.4):
 #   include_role does not work with looping, so have to specify each as an individual task
 #   sometimes software installations will get notified as changed even if they do not change
+#   git would not authenticate with my ssh key
 #
 # Software installations work MUCH better if aptitude is installed ahead of time,
 # and all updates are already installed.
@@ -9,22 +10,42 @@
 # Remember to install openssh-server first, and connect manually to get host key added
 
 ################################################################################
-# Steps to run as root
+# All steps to run as user, each task will determine if it should be root
 ################################################################################
 - hosts: joey_laptop
-  become: yes
   vars:
-    user_name: joey
-    user_group: joey
+
+    development_dir: /work/development
+  vars_prompt:
+  - name: "ssh_key_password"
+    prompt: "SSH RSA Key Password"
+    private: yes
 
   tasks:
+
+################################################################################
+# Computer Configuration
+################################################################################
+
   - name: "Change hostname"
     hostname:
       name: "{{ host_name }}"
+    become: yes
 
   - name: "Change time zone"
     timezone:
       name: "{{ time_zone }}"
+    become: yes
+
+  - name: "Add Canonical Partner Repository"
+    apt_repository:
+      repo: "deb http://archive.canonical.com/ubuntu {{ ansible_distribution_release }} partner"
+      state: present
+    become: yes
+
+################################################################################
+# Folder / Links Configuration
+################################################################################
 
   - name: "Create publicly accessible folders"
     file:
@@ -39,11 +60,105 @@
       - work
     loop_control:
       loop_var: folder_name
+    become: yes
 
-  - name: "Add Canonical Partner Repository"
-    apt_repository:
-      repo: "deb http://archive.canonical.com/ubuntu {{ ansible_distribution_release }} partner"
-      state: present
+  - name: "Create home bin folder"
+    file:
+      path: "/home/{{ ansible_user }}/bin"
+      owner: "{{ ansible_user }}"
+      group: "{{ user_group }}"
+      mode: 0755
+      state: directory
+      follow: yes
+
+  - name: "Create home Development folder"
+    file:
+      path: "/home/{{ ansible_user }}/Development"
+      owner: "{{ ansible_user }}"
+      group: "{{ user_group }}"
+      mode: 0755
+      state: directory
+      follow: yes
+
+  - name: "Move directories from home to data and create symlink: Documents"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ ansible_user }}/Documents"
+      dest_dir: "/data/{{ ansible_user }}/documents"
+
+  - name: "Move directories from home to data and create symlink: Downloads"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ ansible_user }}/Downloads"
+      dest_dir: "/work/downloads"
+
+  - name: "Create downloads iso folder"
+    file:
+      path: "/home/{{ ansible_user }}/Downloads/iso"
+      state: directory
+      owner: "{{ ansible_user }}"
+      group: "{{ user_group }}"
+      mode: 0755
+      follow: yes
+
+  - name: "Create downloads save folder"
+    file:
+      path: "/home/{{ ansible_user }}/Downloads/save"
+      state: directory
+      owner: "{{ ansible_user }}"
+      group: "{{ user_group }}"
+      mode: 0755
+      follow: yes
+
+  - name: "Create downloads test folder"
+    file:
+      path: "/home/{{ ansible_user }}/Downloads/test"
+      state: directory
+      owner: "{{ ansible_user }}"
+      group: "{{ user_group }}"
+      mode: 0755
+      follow: yes
+
+  - name: "Move directories from home to data and create symlink: Downloads save"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/work/downloads/save"
+      dest_dir: "/data/{{ ansible_user }}/downloads"
+
+  - name: "Move directories from home to data and create symlink: Music"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ ansible_user }}/Music"
+      dest_dir: "/data/{{ ansible_user }}/music"
+
+  - name: "Move directories from home to data and create symlink: Pictures"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ ansible_user }}/Pictures"
+      dest_dir: "/data/{{ ansible_user }}/pictures"
+
+  - name: "Move directories from home to data and create symlink: Videos"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ ansible_user }}/Videos"
+      dest_dir: "/data/{{ ansible_user }}/videos"
+
+  - name: "Move directories from home to data and create symlink: Development"
+    include_role:
+      name: move_and_link_folder
+    vars:
+      source_dir: "/home/{{ ansible_user }}/Development"
+      dest_dir: "{{ development_dir }}"
+
+################################################################################
+# Bulk Software Installations
+################################################################################
 
   - name: "Install console software"
     include_role:
@@ -51,182 +166,87 @@
     vars:
       software_pack_list: common_console_tools
 
+  - name: "Install gui applications"
+    include_role:
+      name: software_packs
+    vars:
+      software_pack_list: common_gui_tools
+
   - name: "Install KDE applications"
     include_role:
       name: software_packs
     vars:
       software_pack_list: kde_tools
 
-  - name: "Install other applications"
+################################################################################
+# User Configuration
+################################################################################
+
+  - name: "Copy ssh key files"
     include_role:
-      name: software_packs
+      name: ssh
+      tasks_from: "copy_ssh_keys.yml"
+
+  - name: "Set up git and GitHub"
+    include_role:
+      name: git
     vars:
-      software_pack_list: other
+      user_full_name: "Joey Rockhold"
+      user_email: "joeysbytesdev@gmail.com"
+      user_editor: nano
+      github_projects:
+        - dotfiles
+        - ansiblefiles
+        - "Joeys-Bytes"
 
-  - name: "Install LibreOffice"
-    include_role:
-      name: libreoffice
+################################################################################
+# Individual Software Packages
+################################################################################
 
-  - name: "Install KeePassXC"
+  - name: "Setup bash"
     include_role:
-      name: keepassxc
+      name: bash
 
-  - name: "Install Etcher"
+  - name: "Setup nano"
     include_role:
-      name: etcher
+      name: nano
 
-  - name: "Install Visual Studio Code"
+  - name: "Install Ansible"
     include_role:
-      name: visual_studio_code
+      name: ansible
+
+  - name: "Install Docker"
+    include_role:
+      name: docker
+    vars:
+      docker_enabled: True
 
   - name: "Install DropBox"
     include_role:
       name: dropbox
 
+  - name: "Install Etcher"
+    include_role:
+      name: etcher
+
   - name: "Install Google Chrome"
     include_role:
       name: google_chrome
 
-  - name: "Install Ansible"
+  - name: "Install KeePassXC"
     include_role:
-      name: ansible
+      name: keepassxc
+
+  - name: "Install LibreOffice"
+    include_role:
+      name: libreoffice
 
   - name: "Install VirtualBox"
     include_role:
       name: virtualbox
     vars:
       virtualbox_version: "5.2"
-      virtualbox_user: "{{ user_name }}"
 
-  - name: "Install Docker"
-    include_role:
-      name: docker
-    vars:
-      docker_user: "{{ user_name }}"
-      docker_enabled: True
-
-
-################################################################################
-# Steps to run as user
-################################################################################
-- hosts: joey_laptop
-  vars:
-    user_name: joey
-    user_group: joey
-
-  tasks:
-  - name: "Create home bin folder"
-    file:
-      path: "/home/{{ ansible_user_id }}/bin"
-      owner: "{{ ansible_user_id }}"
-      group: "{{ ansible_user_id }}"
-      mode: 0755
-      state: directory
-
-  - name: "Move directories from home to data and create symlink: Documents"
-    include_role:
-      name: move_and_link_folder
-    vars:
-      source_dir: "/home/{{ user_name }}/Documents"
-      dest_dir: "/data/{{ user_name }}/documents"
-
-  - name: "Move directories from home to data and create symlink: Downloads"
-    include_role:
-      name: move_and_link_folder
-    vars:
-      source_dir: "/home/{{ user_name }}/Downloads"
-      dest_dir: "/work/downloads"
-
-  - name: "Create downloads iso folder"
-    file:
-      path: "/home/{{ user_name }}/Downloads/iso"
-      state: directory
-      owner: "{{ user_name }}"
-      group: "{{ user_group }}"
-      mode: 0755
-      follow: yes
-
-  - name: "Create downloads save folder"
-    file:
-      path: "/data/{{ user_name }}/downloads"
-      state: directory
-      owner: "{{ user_name }}"
-      group: "{{ user_group }}"
-      mode: 0755
-
-  - name: "Create symlink to downloads save folder"
-    file:
-      src: "/data/{{ user_name }}/downloads"
-      path: "/home/{{ user_name }}/Downloads/save"
-      state: link
-      follow: yes
-
-  - name: "Move directories from home to data and create symlink: Music"
-    include_role:
-      name: move_and_link_folder
-    vars:
-      source_dir: "/home/{{ user_name }}/Music"
-      dest_dir: "/data/{{ user_name }}/music"
-
-  - name: "Move directories from home to data and create symlink: Pictures"
-    include_role:
-      name: move_and_link_folder
-    vars:
-      source_dir: "/home/{{ user_name }}/Pictures"
-      dest_dir: "/data/{{ user_name }}/pictures"
-
-  - name: "Move directories from home to data and create symlink: Videos"
-    include_role:
-      name: move_and_link_folder
-    vars:
-      source_dir: "/home/{{ user_name }}/Videos"
-      dest_dir: "/data/{{ user_name }}/videos"
-
-  - name: "Create development folder"
-    file:
-      path: "/work/development"
-      state: directory
-      owner: "{{ user_name }}"
-      group: "{{ user_group }}"
-      mode: 0755
-
-  - name: "Create link to development folder"
-    file:
-      src: "/work/development"
-      path: "/home/{{ user_name }}/Development"
-      state: link
-
-  - name: "Create VirtualBox working folder"
-    file:
-      path: "/work/virtualbox"
-      state: directory
-      owner: "{{ user_name }}"
-      group: "{{ user_group }}"
-      mode: 0755
-
-  - name: "Create symlink to VirtualBox working folder"
-    file:
-      src: "/work/virtualbox"
-      path: "/home/{{ user_name }}/VirtualBox VMs"
-      state: link
-
-  - name: "Setup bash aliases"
-    include_role:
-      name: bash_aliases
-
-  - name: "Setup nano"
-    include_role:
-      name: nano
-
-  - name: "Set up git"
-    include_role:
-      name: git
-
-  - name: "Copy ssh key files"
-    include_role:
-      name: copy_ssh_keys
-
-  - name: "Install Visual Studio Code extensions"
+  - name: "Install Visual Studio Code"
     include_role:
       name: visual_studio_code
-      tasks_from: "visual_studio_code_extensions.yml"

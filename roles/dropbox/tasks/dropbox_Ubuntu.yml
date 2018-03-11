@@ -6,6 +6,7 @@
       - python-gpgme
       - python3-gpgme
     state: present
+  become: yes
 
 - name: "Check if DropBox is installed"
   shell: dropbox status
@@ -21,8 +22,10 @@
     owner: root
     group: root
   when: dropbox_status.stdout == ""
+  become: yes
 
 - name: "Install DropBox for Ubuntu"
   apt:
     deb: "/tmp/dropbox_2015.10.28_amd64.deb"
   when: dropbox_status.stdout == ""
+  become: yes

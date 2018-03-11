@@ -3,6 +3,20 @@
 
 # https://www.virtualbox.org/wiki/Linux_Downloads
 
+- name: "Create VirtualBox working folder"
+  file:
+    path: "/work/virtualbox"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ user_group }}"
+    mode: 0755
+
+- name: "Create symlink to VirtualBox working folder"
+  file:
+    src: "/work/virtualbox"
+    path: "/home/{{ ansible_user }}/VirtualBox VMs"
+    state: link
+
 - name: "Select VirtualBox to install"
   include_tasks: "virtualbox_{{ my_ansible_distribution }}.yml"
 

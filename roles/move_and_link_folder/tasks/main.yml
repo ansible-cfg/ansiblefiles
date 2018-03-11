@@ -89,11 +89,3 @@
     state: link
   when:
     - move_and_link_continue
-
-# ok: [joey_laptop] => {"changed": false, "stat": {"atime": 1519592481.554918, "attr_flags": "e", "attributes": ["extents"],
-# "block_size": 4096, "blocks": 8, "charset": "binary", "ctime": 1519592451.0545125, "dev": 2049, "device_type": 0,
-# "executable": true, "exists": true, "gid": 1000, "gr_name": "joey", "inode": 425240, "isblk": false, "ischr": false,
-# "isdir": true, "isfifo": false, "isgid": false, "islnk": false, "isreg": false, "issock": false, "isuid": false,
-# "mimetype": "inode/directory", "mode": "0755", "mtime": 1519592451.0545125, "nlink": 4, "path": "/home/joey/Documents",
-# "pw_name": "joey", "readable": true, "rgrp": true, "roth": true, "rusr": true, "size": 4096, "uid": 1000,
-# "version": "1381070430", "wgrp": false, "woth": false, "writeable": true, "wusr": true, "xgrp": true, "xoth": true, "xusr": true}}

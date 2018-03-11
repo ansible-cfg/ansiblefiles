@@ -9,15 +9,29 @@ software_pack:
   - mdadm
   - mc
   - nano
-  - p7zip
-  - rar
   - sqlite3
   - sshfs
   - tasksel
   - tmux
   - tree
+  - wget
+
+  # archive tools
+  - p7zip
+  - rar
   - unar
   - unrar
   - unzip
-  - wget
   - zip
+
+  # python 2 version needed for Ansible expect module, python 3 version already installed
+  - python-pexpect
+  - python3-pexpect
+
+  # for python use in general
+  - pylint
+  - pylint3
+  - python-colorama
+  - python3-colorama
+  - python-requests
+  - python3-requests

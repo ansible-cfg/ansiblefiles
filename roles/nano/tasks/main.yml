@@ -2,13 +2,13 @@
 # tasks file for nano
 
 - name: "Install nano"
-  become: yes
   package:
     name: nano
     state: present
+  become: yes
 
-- name: "Install .nanorc"
-  get_url:
-    url: "{{ raw_github_url }}/dotfiles/master/nano/.nanorc"
-    dest: "/home/{{ ansible_user_id }}/.nanorc"
-    mode: 0644
+- name: "Create symlink to .nanorc"
+  file:
+    src: "{{ development_dir }}/dotfiles/nano/.nanorc"
+    dest: "/home/{{ ansible_user }}/.nanorc"
+    state: link

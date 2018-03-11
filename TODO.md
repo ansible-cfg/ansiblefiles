@@ -9,6 +9,8 @@
 * sqlitebrowser (getting apt conflicts)
 * Anaconda
 * Intel firmware
+* DVD Playback: libdvd-pkg, libdvdcss2
+  * sudo dpkg-reconfigure libdvd-pkg
 
 ## Configuration
 

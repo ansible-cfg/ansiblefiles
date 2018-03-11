@@ -1,13 +1,13 @@
 ---
 # tasks file for git
 
-# Variables: user_full_name, user_editor, user_email
+# Variables: user_full_name, user_editor, user_email, dev_dir, github_id, github_projects
 
 - name: "Install git"
-  become: yes
   package:
     name: git
     state: present
+  become: yes
 
 - name: "Configure global git settings"
   git_config:
@@ -20,3 +20,22 @@
     - { name: "core.editor", value: "{{ user_editor }}" }
   loop_control:
     loop_var: git_cfg
+
+- name: "Add github.com to known_hosts"
+  lineinfile:
+    dest: /home/{{ ansible_user }}/.ssh/known_hosts
+    create: yes
+    state: present
+    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+    regexp: "^github\\.com"
+
+- name: "Get GitHub projects"
+  expect:
+    command: "git clone git@github.com:{{ github_id }}/{{ github_project }}.git"
+    chdir: "{{ development_dir }}"
+    responses:
+      "Enter passphrase for key": "{{ ssh_key_password }}"
+    creates: "{{ development_dir }}/{{ github_project }}/.git"
+  with_items: "{{ github_projects }}"
+  loop_control:
+    loop_var: github_project

@@ -5,3 +5,10 @@
 
 - name: "Select Visual Studio Code to install"
   include_tasks: "visual_studio_code_{{ my_ansible_distribution }}.yml"
+
+- name: "Install Visual Studio Code extensions"
+  include_tasks: "visual_studio_code_extensions.yml"
+  vars:
+    vscode_extensions:
+      - "DavidAnson.vscode-markdownlint"
+      - "ms-python.python"

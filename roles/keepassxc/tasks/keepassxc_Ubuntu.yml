@@ -3,8 +3,10 @@
   apt_repository:
     repo: "ppa:phoerious/keepassxc"
     state: present
+  become: yes
 
 - name: "Install KeePassXC for Ubuntu"
   apt:
     name: keepassxc
     state: present
+  become: yes

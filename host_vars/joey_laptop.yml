@@ -2,16 +2,17 @@
 # HOST VARIABLES for joey_laptop
 
 # test host
-# ansible_host: 192.168.1.70
+ansible_host: 192.168.1.70
 
 # production host: wireless
-#ansible_host: 192.168.1.21
+# ansible_host: 192.168.1.21
 
 # production host: wired
-ansible_host: 192.168.1.24
+# ansible_host: 192.168.1.24
 
 ansible_connection: ssh
 ansible_user: joey
+user_group: joey
 ansible_become_method: sudo
 ansible_become_user: root
 

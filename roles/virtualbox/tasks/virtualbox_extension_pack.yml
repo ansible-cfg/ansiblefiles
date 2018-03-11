@@ -65,7 +65,6 @@
   expect:
     command: /bin/bash -c "vboxmanage extpack install --replace /tmp/{{ vbox_ext_pack_filename }}"
     responses:
-      'Do you agree to these license terms and conditions (y/n)?': "y"
+      "Do you agree to these license terms and conditions": "y"
   when: install_vbox_ext_pack
-
-# delete download when done? letting tmp processes handle this
+  become: yes

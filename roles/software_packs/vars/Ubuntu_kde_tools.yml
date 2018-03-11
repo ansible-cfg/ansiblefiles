@@ -14,7 +14,7 @@ software_pack:
   - okular
   - skanlite
   - kde-spectacle
-  # - krita
+  - krita
 
 # Internet
   - akregator

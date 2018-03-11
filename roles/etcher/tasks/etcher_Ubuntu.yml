@@ -4,13 +4,16 @@
     keyserver: "hkp://pgp.mit.edu:80"
     id: "379CE192D401AB61"
     state: present
+  become: yes
 
 - name: "Add Etcher deb for Ubuntu"
   apt_repository:
     repo: "deb https://dl.bintray.com/resin-io/debian stable etcher"
     state: present
+  become: yes
 
 - name: "Install Etcher for Ubuntu"
   apt:
     name: etcher-electron
     state: present
+  become: yes

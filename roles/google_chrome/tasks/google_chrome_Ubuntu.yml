@@ -5,13 +5,16 @@
     url: "https://dl.google.com/linux/linux_signing_key.pub"
     id: "4CCA1EAF950CEE4AB83976DCA040830F7FAC5991"
     state: present
+  become: yes
 
 - name: "Add Google Chrome repository for Ubuntu"
   apt_repository:
     repo: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
     state: present
+  become: yes
 
 - name: "Install Google Chrome for Ubuntu"
   apt:
     name: google-chrome-stable
     state: present
+  become: yes

@@ -3,8 +3,10 @@
   apt_repository:
     repo: "ppa:libreoffice/ppa"
     state: present
+  become: yes
 
 - name: "Install LibreOffice Fresh for Ubuntu"
   apt:
     name: libreoffice
     state: present
+  become: yes
