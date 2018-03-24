@@ -1,0 +1,11 @@
+---
+# TODO: lock down ssh, turn on firewall, set prompt
+
+################################################################################
+# Root playbook to set up main admin user
+################################################################################
+- hosts: vps_webserver
+  vars_prompt:
+  - name: "ssh_key_password"
+    prompt: "SSH RSA Key Password"
+    private: yes

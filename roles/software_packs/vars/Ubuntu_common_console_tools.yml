@@ -24,11 +24,9 @@ software_pack:
   - unzip
   - zip
 
-  # python 2 version needed for Ansible, python 3 for future Ansible
+  # python 2 version needed for Ansible guests, python 3 for future Ansible guests
   - python-pexpect
   - python3-pexpect
-  - python-passlib
-  - python3-passlib
 
   # for python use in general
   - pylint

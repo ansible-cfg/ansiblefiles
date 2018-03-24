@@ -2,8 +2,14 @@
 
 - name: "Install Ansible pre-requisites for Ubuntu"
   apt:
-    name: software-properties-common
+    name: "{{ ansible_dependency }}"
     state: present
+  with_items:
+    - software-properties-common
+    - python-passlib
+    - python3-passlib
+  loop_control:
+    loop_var: ansible_dependency
   become: yes
 
 - name: "Add Ansible PPA for Ubuntu"

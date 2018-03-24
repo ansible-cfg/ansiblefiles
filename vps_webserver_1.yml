@@ -1,4 +1,5 @@
 ---
+# TODO: lock down ssh, turn on firewall, set prompt
 
 ################################################################################
 # Root playbook to set up main admin user
@@ -7,6 +8,7 @@
   vars:
     ansible_user: root
     admin_user: joey
+    admin_full_name: "Joey Rockhold"
   vars_prompt:
   - name: "admin_password"
     prompt: "Enter password for admin user"
@@ -14,7 +16,6 @@
     encrypt: "sha512_crypt"
     confirm: yes
 
-  tasks:
   - name: "Add sshusers group"
     group:
       name: sshusers
@@ -23,10 +24,10 @@
   - name: "Add main admin user: {{ admin_user }}"
     user:
       name: "{{ admin_user }}"
-      comment: "Joey Rockhold"
+      comment: "{{ admin_full_name }}"
       groups:
+        - sudo
         - sshusers
       password: "{{ admin_password }}"
       update_password: on_create
       state: present
-
