@@ -1,14 +1,8 @@
 ---
-# HOST VARIABLES for joey_laptop
+# HOST VARIABLES for vps_webserver
 
-# test host
-# ansible_host: 192.168.1.70
-
-# production host: wireless
-# ansible_host: 192.168.1.21
-
-# production host: wired
-ansible_host: 192.168.1.24
+# production host
+ansible_host: joeysbytes.net
 
 ansible_connection: ssh
 ansible_user: joey
@@ -16,7 +10,7 @@ user_group: joey
 ansible_become_method: sudo
 ansible_become_user: root
 
-host_name: e7240
+host_name: websvr
 
 # Some special distributions report values that need to be something else.
 # These variables are meant to be used instead of ansible facts

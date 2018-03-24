@@ -1,0 +1,32 @@
+---
+
+################################################################################
+# Root playbook to set up main admin user
+################################################################################
+- hosts: vps_webserver
+  vars:
+    ansible_user: root
+    admin_user: joey
+  vars_prompt:
+  - name: "admin_password"
+    prompt: "Enter password for admin user"
+    private: yes
+    encrypt: "sha512_crypt"
+    confirm: yes
+
+  tasks:
+  - name: "Add sshusers group"
+    group:
+      name: sshusers
+      state: present
+
+  - name: "Add main admin user: {{ admin_user }}"
+    user:
+      name: "{{ admin_user }}"
+      comment: "Joey Rockhold"
+      groups:
+        - sshusers
+      password: "{{ admin_password }}"
+      update_password: on_create
+      state: present
+

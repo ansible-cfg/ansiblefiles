@@ -24,9 +24,11 @@ software_pack:
   - unzip
   - zip
 
-  # python 2 version needed for Ansible expect module, python 3 version already installed
+  # python 2 version needed for Ansible, python 3 for future Ansible
   - python-pexpect
   - python3-pexpect
+  - python-passlib
+  - python3-passlib
 
   # for python use in general
   - pylint
