@@ -1,0 +1,55 @@
+---
+################################################################################
+# Playbook to setup web server
+################################################################################
+- hosts: vps_webserver
+
+  tasks:
+  
+################################################################################
+# Computer Configuration
+################################################################################
+  - name: "Change hostname"
+    hostname:
+      name: "{{ host_name }}"
+    become: yes
+
+  - name: "Change time zone"
+    timezone:
+      name: "{{ time_zone }}"
+    become: yes
+
+################################################################################
+# Folder / Links Configuration
+################################################################################
+  - name: "Create publicly accessible folders"
+    file:
+      path: "/{{ folder_name }}"
+      owner: root
+      group: root
+      mode: 0777
+      state: directory
+    with_items:
+      - data
+      - tmp2
+    loop_control:
+      loop_var: folder_name
+    become: yes
+
+  - name: "Create home bin folder"
+    file:
+      path: "/home/{{ ansible_user }}/bin"
+      owner: "{{ ansible_user }}"
+      group: "{{ user_group }}"
+      mode: 0755
+      state: directory
+      follow: yes
+
+################################################################################
+# Bulk Software Installations
+################################################################################
+  - name: "Install console software"
+    include_role:
+      name: software_packs
+    vars:
+      software_pack_list: common_console_tools
