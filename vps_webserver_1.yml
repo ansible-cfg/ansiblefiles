@@ -1,8 +1,8 @@
 ---
-# TODO: lock down ssh, turn on firewall, set prompt
+# TODO: lock down ssh, turn on firewall
 
 ################################################################################
-# Root playbook to set up main admin user
+# Root playbook to set up main admin user, run as root
 ################################################################################
 - hosts: vps_webserver
   vars:
@@ -16,6 +16,7 @@
     encrypt: "sha512_crypt"
     confirm: yes
 
+  tasks:
   - name: "Add sshusers group"
     group:
       name: sshusers
@@ -24,6 +25,7 @@
   - name: "Add main admin user: {{ admin_user }}"
     user:
       name: "{{ admin_user }}"
+      shell: /bin/bash
       comment: "{{ admin_full_name }}"
       groups:
         - sudo

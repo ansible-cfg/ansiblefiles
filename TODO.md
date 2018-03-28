@@ -30,7 +30,7 @@
 ## Other
 
 * reboot (not working well)
-* break playbook up by root, user tasks
+* research more security measures (login/ssh, nginx)
 
 ## Not installing at this time
 

@@ -1,14 +1,5 @@
 ---
 
-# must be root user
-# Parameters: ssh_user
-
-- name: "Add this computer to authorized keys"
-  authorized_key:
-    user: "{{ ssh_user }}"
-    state: present
-    key: "{{ lookup('file', '/home/joey/.ssh/id_rsa.pub') }}"
-
 - name: "Set ssh properties"
   lineinfile:
     path: "/etc/ssh/sshd_config"
