@@ -3,14 +3,16 @@
 
 # production host
 ansible_host: joeysbytes.net
-
+ansible_python_interpreter: /usr/bin/python3
 ansible_connection: ssh
 ansible_user: joey
-user_group: joey
 ansible_become_method: sudo
 ansible_become_user: root
 
-host_name: websvr
+admin_user: joey
+admin_full_name: "Joey Rockhold"
+admin_user_group: joey
+host_name: svr1
 
 # Some special distributions report values that need to be something else.
 # These variables are meant to be used instead of ansible facts

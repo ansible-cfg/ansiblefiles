@@ -1,13 +1,41 @@
 ---
 ################################################################################
-# Playbook to setup web server
+# Playbook to setup VPS web server
 ################################################################################
+
+# eval $(ssh-agent); ssh-add ./.ssh/id_rsa
+# ansible-playbook vps_webserver.yml --inventory=./hosts --ask-become-pass -v
+
 - hosts: vps_webserver
+  vars:
+    console_tools:
+      - aptitude
+      - curl
+      - git
+      - htop
+      - man
+      - mc
+      - nano
+      - sqlite3
+      - sshfs
+      - tasksel
+      - tmux
+      - tree
+      - wget
+      # archive tools
+      - p7zip
+      - rar
+      - unar
+      - unrar
+      - unzip
+      - zip
+      # Needed as an Ansible-managed machine
+      - python3-pexpect
 
   tasks:
-  
+
 ################################################################################
-# Computer Configuration
+# Server Configuration
 ################################################################################
   - name: "Change hostname"
     hostname:
@@ -19,8 +47,14 @@
       name: "{{ time_zone }}"
     become: yes
 
+  - name: "Import swapfile role"
+    import_role:
+      name: swapfile
+    vars:
+      swapfile_size_mb: "768"
+
 ################################################################################
-# Folder / Links Configuration
+# Folders / Links Configuration
 ################################################################################
   - name: "Create publicly accessible folders"
     file:
@@ -38,18 +72,20 @@
 
   - name: "Create home bin folder"
     file:
-      path: "/home/{{ ansible_user }}/bin"
-      owner: "{{ ansible_user }}"
-      group: "{{ user_group }}"
+      path: "/home/{{ admin_user }}/bin"
+      owner: "{{ admin_user }}"
+      group: "{{ admin_user_group }}"
       mode: 0755
       state: directory
       follow: yes
 
 ################################################################################
-# Bulk Software Installations
+# Software Installations
 ################################################################################
-  - name: "Install console software"
-    include_role:
-      name: software_packs
-    vars:
-      software_pack_list: common_console_tools
+
+  - name: "Install console tools"
+    apt:
+      name: "{{ console_tools }}"
+      state: present
+      update_cache: yes
+    become: yes

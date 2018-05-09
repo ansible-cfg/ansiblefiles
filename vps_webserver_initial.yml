@@ -1,14 +1,17 @@
 ---
-# TODO: lock down ssh, turn on firewall
+################################################################################
+# Root playbook to set up main admin user, run as root user
+# Once this playbook is done, you should run all future playbooks
+#   as the admin user.
+################################################################################
 
-################################################################################
-# Root playbook to set up main admin user, run as root
-################################################################################
+# ansible-playbook vps_webserver_initial.yml --inventory=./hosts --ask-pass -v
+
 - hosts: vps_webserver
   vars:
     ansible_user: root
-    admin_user: joey
-    admin_full_name: "Joey Rockhold"
+    local_source_user: ansibleuser
+
   vars_prompt:
   - name: "admin_password"
     prompt: "Enter password for admin user"
@@ -33,3 +36,16 @@
       password: "{{ admin_password }}"
       update_password: on_create
       state: present
+
+  - name: "Add authorized key for login for user: {{ admin_user }}"
+    authorized_key:
+      user: "{{ admin_user }}"
+      state: present
+      key: "{{ lookup('file', '/home/{{ local_source_user }}/.ssh/id_rsa.pub') }}"
+    become: yes
+    become_user: "{{ admin_user }}"
+
+  - name: "Lock down ssh to users in group sshusers"
+    include_role:
+      name: ssh
+      tasks_from: "lock_down_ssh.yml"

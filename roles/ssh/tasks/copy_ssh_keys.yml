@@ -1,6 +1,5 @@
 ---
-
-- name: "Create ssh folder in home directory for user: {{ user_name }}"
+- name: "Create ssh folder in home directory for user: {{ ansible_user }}"
   file:
     path: "/home/{{ ansible_user }}/.ssh"
     state: directory
@@ -10,7 +9,7 @@
 
 - name: "Copy ssh private key"
   copy:
-    src: "/home/{{ ansible_user }}/.ssh/id_rsa"
+    src: "/home/{{ local_source_user }}/.ssh/id_rsa"
     dest: "/home/{{ ansible_user }}/.ssh/id_rsa"
     owner: "{{ ansible_user }}"
     group: "{{ user_group }}"
@@ -19,7 +18,7 @@
 
 - name: "Copy ssh public key"
   copy:
-    src: "/home/{{ ansible_user }}/.ssh/id_rsa.pub"
+    src: "/home/{{ local_source_user }}/.ssh/id_rsa.pub"
     dest: "/home/{{ ansible_user }}/.ssh/id_rsa.pub"
     owner: "{{ ansible_user }}"
     group: "{{ user_group }}"

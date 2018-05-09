@@ -1,14 +1,25 @@
 ---
 # tasks file for nano
 
+# Parameters:
+#   update_nano_config to override .nanorc from github
+#   development_dir: to link to .nanorc from development directory
+
 - name: "Install nano"
   package:
     name: nano
     state: present
   become: yes
 
-- name: "Create symlink to .nanorc"
+# - name: "Get .nanorc from github dotfiles project"
+#   url:
+#     force: "{{ update_nano_config }}"
+#   when: development_dir is undefined
+
+- name: "Create symlink to .nanorc from development project"
   file:
     src: "{{ development_dir }}/dotfiles/nano/.nanorc"
     dest: "/home/{{ ansible_user }}/.nanorc"
     state: link
+  when: development_dir is defined
+
