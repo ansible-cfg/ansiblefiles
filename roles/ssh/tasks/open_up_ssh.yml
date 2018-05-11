@@ -1,0 +1,14 @@
+---
+
+- name: "Set ssh properties"
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    state: present
+    regexp: "{{ item.line_start }}"
+    line: "{{ item.line_change }}"
+  with_items:
+    - { line_start: "^PasswordAuthentication ", line_change: "PasswordAuthentication yes" }
+    - { line_start: "^PermitRootLogin ", line_change: "PermitRootLogin yes" }
+  register: ssh_properties
+  become: yes
+  notify: "Restart ssh service"

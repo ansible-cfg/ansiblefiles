@@ -1,0 +1,11 @@
+---
+
+# handlers file for ssh
+
+- name: "Restart ssh service"
+  systemd:
+    name: "sshd.service"
+    enabled: yes
+    state: restarted
+  when: ssh_properties.changed
+  become: yes

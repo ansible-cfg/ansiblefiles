@@ -45,7 +45,7 @@
     become: yes
     become_user: "{{ admin_user }}"
 
-  - name: "Lock down ssh to users in group sshusers"
-    include_role:
+  - name: "Import role to lock down ssh to users in group sshusers"
+    import_role:
       name: ssh
       tasks_from: "lock_down_ssh.yml"

@@ -1,0 +1,30 @@
+---
+# Some linux distributions (Ubuntu) force you to install with a sudo user,
+# and with root user locked out.  This playbook is meant to remove this user
+# and enable login to the root user.  This allows you to mimic how a VPS
+# would set up a virtual machine.
+
+# ansible-playbook reset_to_root_only.yml --inventory=./hosts --ask-pass --ask-become-pass -v
+
+- hosts: ad_hoc_1
+
+  vars_prompt:
+  - name: "root_password"
+    prompt: "Enter new password for root"
+    private: yes
+    encrypt: "sha512_crypt"
+    confirm: yes
+
+  tasks:
+  - name: "Set root password"
+    user:
+      name: "root"
+      password: "{{ root_password }}"
+      update_password: always
+      state: present
+    become: yes
+
+  - name: "Import role to open up ssh to root with password"
+    import_role:
+      name: ssh
+      tasks_from: "open_up_ssh.yml"

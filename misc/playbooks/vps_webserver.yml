@@ -3,7 +3,7 @@
 # Playbook to setup VPS web server
 ################################################################################
 
-# eval $(ssh-agent); ssh-add ./.ssh/id_rsa
+# eval $(ssh-agent); ssh-add ~/.ssh/id_rsa
 # ansible-playbook vps_webserver.yml --inventory=./hosts --ask-become-pass -v
 
 - hosts: vps_webserver
@@ -47,11 +47,15 @@
       name: "{{ time_zone }}"
     become: yes
 
-  - name: "Import swapfile role"
+  - name: "Import swap_file role"
     import_role:
-      name: swapfile
+      name: swap_file
     vars:
       swapfile_size_mb: "768"
+
+# TODO: mount data drive
+# TODO: user config files
+# TODO: firewall
 
 ################################################################################
 # Folders / Links Configuration

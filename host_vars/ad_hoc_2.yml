@@ -1,0 +1,8 @@
+---
+# HOST VARIABLES for ad_hoc
+
+ansible_host: 192.168.56.101
+
+ansible_python_interpreter: /usr/bin/python3
+ansible_connection: ssh
+ansible_user: root

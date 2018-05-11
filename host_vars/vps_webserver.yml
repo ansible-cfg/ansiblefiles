@@ -1,8 +1,11 @@
 ---
 # HOST VARIABLES for vps_webserver
 
+# test host
+ansible_host: 192.168.56.102
 # production host
-ansible_host: joeysbytes.net
+# ansible_host: joeysbytes.net
+
 ansible_python_interpreter: /usr/bin/python3
 ansible_connection: ssh
 ansible_user: joey

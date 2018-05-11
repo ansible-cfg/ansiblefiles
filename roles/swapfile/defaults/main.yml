@@ -1,5 +1,0 @@
----
-# defaults file for swapfile
-
-swapfile_dir: "/swap"
-swapfile_name: "swapfile"

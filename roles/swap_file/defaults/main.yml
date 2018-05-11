@@ -1,0 +1,5 @@
+---
+# defaults file for swap_file
+
+swap_file_dir: "/swap"
+swap_file_name: "swapfile"

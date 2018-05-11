@@ -1,0 +1,8 @@
+---
+# tasks file for mount_drive
+
+# Required parameters:
+#    mount_drive_mount_point
+#    mount_drive_device
+#    mount_drive_fstab (yes / no)
+

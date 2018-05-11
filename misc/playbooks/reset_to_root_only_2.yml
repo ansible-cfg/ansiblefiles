@@ -1,0 +1,13 @@
+---
+- hosts: ad_hoc_2
+
+  vars:
+    user_to_remove: joey
+
+  tasks:
+  - name: "Delete user {{ user_to_remove }}"
+    user:
+      name: "{{ user_to_remove }}"
+      remove: yes
+      force: yes
+      state: absent
